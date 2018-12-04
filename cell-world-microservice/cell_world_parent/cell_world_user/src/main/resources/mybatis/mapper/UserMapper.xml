@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.meux.icarbonx.dao.UserDao">
+    <select id="queryAccount" parameterType="User" resultType="User">
+        select uid,username,password from cell_world_user where username= #{username} and password = #{password};
+    </select>
+
+    <insert id="addAccount" parameterType="User" >
+        insert into cell_world_user (username,password) values(#{username},#{password});
+    </insert>
+    <delete id="deleteAccount" parameterType="Integer">
+        delete from cell_world_user where uid = #{uid};
+    </delete>
+
+    <select id="queryAllAccount" resultType="User">
+        select uid,username,password from cell_world_user;
+    </select>
+
+</mapper>
