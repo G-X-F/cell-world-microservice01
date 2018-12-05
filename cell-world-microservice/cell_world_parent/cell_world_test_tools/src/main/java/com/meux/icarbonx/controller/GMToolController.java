@@ -172,4 +172,9 @@ public class GMToolController {
         return null;
     }
 
+    @GetMapping("/test")
+    public Result test(){
+        return new Result(1,"hello");
+    }
+
 }

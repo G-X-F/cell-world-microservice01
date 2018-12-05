@@ -144,6 +144,7 @@
         <module>cell_world_user</module>
         <module>cell_world_eureka_7001</module>
         <module>cell_world_test_tools</module>
+        <module>cell_world_web</module>
     </modules>
 
 
