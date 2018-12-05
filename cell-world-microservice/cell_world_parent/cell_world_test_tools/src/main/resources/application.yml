@@ -1,0 +1,23 @@
+server:
+  port: 8003
+
+spring:
+  application:
+    name: CELL-WORLD-TEST_TOOLS
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/
+  instance:
+    instance-id: cell-world-test-tools8003
+    prefer-ip-address: true
+
+info:
+  app.name: meux.icarbonx
+  company.name: www.icarbonx.com
+
+command:
+  cmd: 1112
+  addItem: 0
+  setLevel: 1
+  url: 192.168.150.72:9016

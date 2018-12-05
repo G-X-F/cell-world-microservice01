@@ -1,0 +1,26 @@
+server:
+  port: 8001
+
+spring:
+  thymeleaf:
+    cache: false
+  application:
+    name: CELL-WORLD-MAIL
+
+mail:
+  cmd: 1111
+  sys-mail: 0
+  patch-mail: 1
+  server-url: 192.168.150.72:9016
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/
+  instance:
+    instance-id: cell-world-mail8001
+    prefer-ip-address: true
+
+info:
+  app.name: meux.icarbonx
+  company.name: www.icarbonx.com
