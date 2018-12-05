@@ -13,7 +13,7 @@ public class TestToolService {
     @Autowired
     private HttpClientService service;
 
-    public boolean issueItems(ProtobuffFrame.Request request,String url) throws InvalidProtocolBufferException {
+    public boolean sendTo(ProtobuffFrame.Request request,String url) throws InvalidProtocolBufferException {
         ProtobuffFrame.Response response = service.sendPost(request, url);
         if(null != response && response.getCode()==0){
             return true;
@@ -22,12 +22,21 @@ public class TestToolService {
     }
 
 
-    public boolean setRoleLevel(ProtobuffFrame.Request request,String url) throws InvalidProtocolBufferException {
-        ProtobuffFrame.Response response = service.sendPost(request, url);
-        if(null != response && response.getCode()==0){
-            return true;
-        }
-        return false;
-    }
+//    public boolean setRoleLevel(ProtobuffFrame.Request request,String url) throws InvalidProtocolBufferException {
+//        ProtobuffFrame.Response response = service.sendPost(request, url);
+//        if(null != response && response.getCode()==0){
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//
+//    public boolean sendPatchMail(ProtobuffFrame.Request request,String url) throws InvalidProtocolBufferException {
+//        ProtobuffFrame.Response response = service.sendPost(request, url);
+//        if(null != response && response.getCode()==0){
+//            return true;
+//        }
+//        return false;
+//    }
 
 }

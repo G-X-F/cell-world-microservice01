@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: CELL-WORLD-TEST_TOOLS
+    name: CELL-WORLD-TEST-TOOLS
 eureka:
   client:
     service-url:
@@ -17,7 +17,14 @@ info:
   company.name: www.icarbonx.com
 
 command:
-  cmd: 1112
-  addItem: 0
-  setLevel: 1
+  cmd: 1111
+  sub_01: 1
+  sub_02: 2
+  sub_03: 3
+  sub_04: 4
+  sub_05: 5
+  sub_06: 6
+  sub_07: 7
+  sub_08: 8
+  sub_09: 9
   url: 192.168.150.72:9016
