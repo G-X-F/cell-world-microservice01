@@ -140,7 +140,6 @@
         </plugins>
     </build>
     <modules>
-        <module>cell_world_mail</module>
         <module>cell_world_common</module>
         <module>cell_world_user</module>
         <module>cell_world_eureka_7001</module>
