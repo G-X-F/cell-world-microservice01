@@ -1,11 +1,9 @@
 package com.meux.icarbonx.service;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.meux.icarbonx.proto.ProtobuffFrame;
+import com.meux.icarbonx.proto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TestToolService {
@@ -13,7 +11,7 @@ public class TestToolService {
     @Autowired
     private HttpClientService service;
 
-    public boolean sendTo(ProtobuffFrame.Request request,String url) throws InvalidProtocolBufferException {
+    public boolean sendTo(ProtobuffFrame.Request request, String url) throws InvalidProtocolBufferException {
         ProtobuffFrame.Response response = service.sendPost(request, url);
         if(null != response && response.getCode()==0){
             return true;

@@ -18,13 +18,13 @@ info:
 
 command:
   cmd: 1111
-  sub_01: 1
-  sub_02: 2
-  sub_03: 3
-  sub_04: 4
-  sub_05: 5
-  sub_06: 6
-  sub_07: 7
-  sub_08: 8
-  sub_09: 9
+  sub_01: 0
+  sub_02: 1
+  sub_03: 2
+  sub_04: 3
+  sub_05: 4
+  sub_06: 5
+  sub_07: 6
+  sub_08: 7
+  sub_09: 8
   url: 192.168.150.72:9016
