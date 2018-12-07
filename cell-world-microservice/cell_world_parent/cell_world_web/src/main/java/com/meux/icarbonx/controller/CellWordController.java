@@ -3,12 +3,11 @@ package com.meux.icarbonx.controller;
 import com.meux.icarbonx.entities.Result;
 import com.meux.icarbonx.service.GmToolsFeignService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/item")
+@CrossOrigin(value = "*",allowCredentials = "true")
 public class CellWordController {
 
     @Autowired
@@ -42,6 +41,7 @@ public class CellWordController {
      * @param tempId
      * @return
      */
+    @PostMapping(value = "sysmail")
     public Result sendSysMail(int wid,int tempId){
         return gmToolsService.sendSysMail(wid,tempId);
     }
@@ -53,6 +53,7 @@ public class CellWordController {
      * @param tempId
      * @return
      */
+    @PostMapping(value = "patchmail")
     public Result sendPatchMail(String rid,int wid,int tempId){
         long role = Long.parseLong(rid,16);
         return gmToolsService.sendPatchMail(role,wid,tempId);

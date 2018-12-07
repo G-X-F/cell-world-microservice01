@@ -1,6 +1,7 @@
 package com.meux.icarbonx.service;
 
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.meux.icarbonx.entities.Result;
 import com.meux.icarbonx.proto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

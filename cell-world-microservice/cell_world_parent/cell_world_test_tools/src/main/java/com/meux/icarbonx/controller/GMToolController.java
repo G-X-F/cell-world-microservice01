@@ -28,11 +28,6 @@ public class GMToolController {
 
     /**
      * 发放道具
-     * @param rid
-     * @param wid
-     * @param items
-     * @param nums
-     * @return
      */
     @GetMapping("/item/additem")
     public Result issueItems(long rid, int wid, String items, String nums){
@@ -69,10 +64,6 @@ public class GMToolController {
 
     /**
      * 设置角色等级
-     * @param rid
-     * @param wid
-     * @param level
-     * @return
      */
     @GetMapping("/item/setlevel")
     public Result setRoleLevel(long rid, int wid,int level){
@@ -103,9 +94,6 @@ public class GMToolController {
 
     /**
      * 发送全服邮件
-     * @param wid
-     * @param tempId
-     * @return
      */
     @GetMapping("/item/sysmail")
     public Result sendSysMail(int wid,int tempId){
@@ -135,10 +123,6 @@ public class GMToolController {
 
     /**
      * 发送定向邮件
-     * @param rid
-     * @param wid
-     * @param tempId
-     * @return
      */
     @GetMapping("/item/patchmail")
     public Result sendPatchMail(long rid,int wid,int tempId){

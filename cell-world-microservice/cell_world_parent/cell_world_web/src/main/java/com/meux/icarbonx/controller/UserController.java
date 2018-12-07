@@ -3,14 +3,13 @@ package com.meux.icarbonx.controller;
 import com.meux.icarbonx.entities.User;
 import com.meux.icarbonx.service.UserFeignService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/user")
+@CrossOrigin(value = "*",allowCredentials = "true")
 public class UserController {
 
     @Autowired
@@ -24,9 +23,13 @@ public class UserController {
      * @param username  用户名
      * @param password  密码
      */
-    @GetMapping("/login")
+    @PostMapping("/login")
     public User login(String username, String password){
+        System.out.println("请求过来了");
+        System.out.println(username);
+        System.out.println(password);
         User user = userFeignService.login(username, password);
+        System.out.println(user);
         if(null != user){
             request.getSession().setAttribute("account",user);
         }
