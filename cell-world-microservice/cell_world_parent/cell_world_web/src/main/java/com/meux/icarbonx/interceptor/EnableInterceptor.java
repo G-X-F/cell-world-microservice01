@@ -20,12 +20,12 @@ public class EnableInterceptor {
         return new WebMvcConfigurer(){
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
-                registry.addViewController("/").setViewName("index");
+                //registry.addViewController("/").setViewName("index");
             }
 
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
-                registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/","/user/login","/page/index","/css/**","/js/**","/img/**","/font-awesome/**");
+                //registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/","/user/login","/page/index","/css/**","/js/**","/img/**","/font-awesome/**");
 
             }
 
