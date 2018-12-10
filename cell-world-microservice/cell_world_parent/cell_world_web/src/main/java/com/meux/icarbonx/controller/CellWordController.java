@@ -13,7 +13,7 @@ public class CellWordController {
     @Autowired
     private GmToolsFeignService gmToolsService;
 
-    @GetMapping("/additem")
+    @PostMapping("/additem")
     public Result issueItems(String rid,int wid,String items,String nums){
         //将角色id进行进制转换
         long role = Long.parseLong(rid,16);

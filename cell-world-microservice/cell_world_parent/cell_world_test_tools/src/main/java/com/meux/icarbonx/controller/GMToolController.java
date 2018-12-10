@@ -9,6 +9,7 @@ import com.meux.icarbonx.service.TestToolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -48,7 +49,7 @@ public class GMToolController {
 
             ProtobuffFrame.Request.Builder request = ProtobuffFrame.Request.newBuilder();
             request.setCmd(config.getCmd());
-            request.setSub(config.getSub_04());
+            request.setSub(config.getSub_03());
             request.setBody(body.build().toByteString());
 
             boolean b = toolService.sendTo(request.build(),config.getUrl());
@@ -65,7 +66,7 @@ public class GMToolController {
     /**
      * 设置角色等级
      */
-    @GetMapping("/item/setlevel")
+    @PostMapping("/item/setlevel")
     public Result setRoleLevel(long rid, int wid,int level){
         try {
             if(StringUtils.isEmpty(rid) ||StringUtils.isEmpty(wid)||StringUtils.isEmpty(level) ){
@@ -78,7 +79,7 @@ public class GMToolController {
 
             ProtobuffFrame.Request.Builder request = ProtobuffFrame.Request.newBuilder();
             request.setCmd(config.getCmd());
-            request.setSub(config.getSub_05());
+            request.setSub(config.getSub_04());
             request.setBody(body.build().toByteString());
 
             boolean b = toolService.sendTo(request.build(),config.getUrl());
@@ -95,7 +96,7 @@ public class GMToolController {
     /**
      * 发送全服邮件
      */
-    @GetMapping("/item/sysmail")
+    @PostMapping("/item/sysmail")
     public Result sendSysMail(int wid,int tempId){
         try {
             if(StringUtils.isEmpty(wid)|| StringUtils.isEmpty(tempId)) {
@@ -124,7 +125,7 @@ public class GMToolController {
     /**
      * 发送定向邮件
      */
-    @GetMapping("/item/patchmail")
+    @PostMapping("/item/patchmail")
     public Result sendPatchMail(long rid,int wid,int tempId){
         try {
             if(StringUtils.isEmpty(wid)|| StringUtils.isEmpty(tempId)||StringUtils.isEmpty(rid)) {
@@ -150,7 +151,7 @@ public class GMToolController {
         return null;
     }
 
-    @GetMapping("/test")
+    @PostMapping("/test")
     public Result test(){
         return new Result(1,"hello");
     }

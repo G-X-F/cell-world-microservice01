@@ -1,11 +1,10 @@
 package com.meux.icarbonx.dao;
 
 import com.meux.icarbonx.entities.User;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
-@Mapper
+//@Mapper
 public interface UserDao {
     /**
      * 登陆

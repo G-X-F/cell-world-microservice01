@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.*;
 
-@Service
+//@Service
 public class UserService {
     @Autowired
     private UserDao userDao;

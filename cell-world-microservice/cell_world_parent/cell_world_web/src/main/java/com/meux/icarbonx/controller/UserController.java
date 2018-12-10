@@ -26,8 +26,6 @@ public class UserController {
     @PostMapping("/login")
     public User login(String username, String password){
         System.out.println("请求过来了");
-        System.out.println(username);
-        System.out.println(password);
         User user = userFeignService.login(username, password);
         System.out.println(user);
         if(null != user){
