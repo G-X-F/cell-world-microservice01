@@ -3,8 +3,7 @@ server:
 
 eureka:
   instance:
-    #hostname: eureka7001.com
-    hostname: 127.0.0.1
+    hostname: eureka7001.com
     prefer-ip-address: true
   client:
     fetch-registry: false

@@ -16,9 +16,6 @@ public class HttpClientService {
 
     /**
      * 向指定服务器发送post请求
-     * @param request
-     * @param targetUrl
-     * @return
      */
     public ProtobuffFrame.Response sendPost(ProtobuffFrame.Request request,String targetUrl ) throws InvalidProtocolBufferException {
 

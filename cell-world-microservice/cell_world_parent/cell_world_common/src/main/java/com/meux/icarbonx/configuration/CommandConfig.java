@@ -27,14 +27,13 @@ public class CommandConfig {
      * 发放道具
      */
     private Integer sub_04;
-    /**
-     * 设置角色等级
-     */
     private Integer sub_05;
+
     private Integer sub_06;
     private Integer sub_07;
     private Integer sub_08;
     private Integer sub_09;
 
     private String url;
+
 }

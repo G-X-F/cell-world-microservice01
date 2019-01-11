@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: CELL-WORLD-TEST-TOOLS
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 eureka:
   client:
     service-url:
@@ -27,7 +31,10 @@ command:
   sub_07: 6
   sub_08: 7
   sub_09: 8
-  url: http://10.0.66.13:80
+  #url: http://10.0.66.13:80 线上
 
-  #url: http://192.168.150.43:9016 #本地测试
+  url: http://127.0.0.1:9016
 
+fileConfig:
+  fileType: xls,bytes
+  targetPath: D:\\cellword-config\

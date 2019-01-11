@@ -1,18 +1,23 @@
 package com.meux.icarbonx.controller;
 
+import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.meux.icarbonx.configuration.CommandConfig;
+import com.meux.icarbonx.configuration.FileConfig;
 import com.meux.icarbonx.entities.Code;
 import com.meux.icarbonx.entities.Result;
 import com.meux.icarbonx.proto.*;
 import com.meux.icarbonx.service.TestToolService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import static com.meux.icarbonx.utis.Avatas.Array2List;
@@ -20,12 +25,18 @@ import static com.meux.icarbonx.utis.Avatas.Array2List;
 @RestController
 public class GMToolController {
 
-    @Autowired
-    private TestToolService toolService;
+    private final TestToolService toolService;
+
+    private final CommandConfig config;
+
+    private final FileConfig fileConfig;
 
     @Autowired
-    private CommandConfig config;
-
+    public GMToolController(TestToolService toolService, CommandConfig config, FileConfig fileConfig) {
+        this.toolService = toolService;
+        this.config = config;
+        this.fileConfig = fileConfig;
+    }
 
     /**
      * 发放道具
@@ -154,6 +165,70 @@ public class GMToolController {
     @PostMapping("/test")
     public Result test(){
         return new Result(1,"hello");
+    }
+
+//    @PostMapping("/config/update")
+//    public Result updateConfig(@RequestParam("files") MultipartFile[] files ) throws IOException {
+//        if(files.length == 0){
+//            return new Result(Code.ERROR, "文件列表为空，上传失败");
+//        }
+//
+//        for(MultipartFile file : files){
+//            if(!file.isEmpty()){
+//                //获取文件名
+//                String oldFileName=file.getOriginalFilename();
+//                //获取文件名后缀
+//                String type = oldFileName.contains(".")?oldFileName.substring(oldFileName.lastIndexOf(".")+1):null;
+//                String fileType = fileConfig.getFileType();
+//                //校验文件类型
+//                if(type != null && fileType.contains(type)){
+//                    //文件存储地址
+////                    String targetPath = fileConfig.getTargetPath();
+////                    File f = new File(targetPath + oldFileName);
+////                    file.transferTo(f);
+//
+//                    //向配置服推送数据
+//                    ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
+//                    msg.setCmd(1110);
+//                    msg.setSub(2);
+//                    msg.setBody(ByteString.copyFrom(file.getBytes()));
+//                    boolean b = toolService.sendTo(msg.build(), "http://127.0.0.1:9010");
+//                    if(b){
+//                        return new Result(Code.SUCCESS,"配置更新成功");
+//                    }
+//                    return new Result(Code.ERROR,"配置更新失败");
+//                }
+//            }
+//        }
+//
+//        return null;
+//    }
+
+
+    @PostMapping("/config/update")
+    public Result updateConfig(@RequestParam("file") MultipartFile file ) throws IOException {
+        if(file.isEmpty()){
+            return new Result(Code.ERROR,"文件为空，上传失败");
+        }
+        //获取文件名
+        String oldFileName=file.getOriginalFilename();
+        //获取文件名后缀
+        String type = oldFileName.contains(".")?oldFileName.substring(oldFileName.lastIndexOf(".")+1):null;
+        String fileType = fileConfig.getFileType();
+        //校验文件类型
+        if(type != null && fileType.contains(type)){
+            //向配置服推送数据
+            ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
+            msg.setCmd(1110);
+            msg.setSub(2);
+            msg.setBody(ByteString.copyFrom(file.getBytes()));
+            boolean b = toolService.sendTo(msg.build(), "http://127.0.0.1:9010");
+            if(b){
+                return new Result(Code.SUCCESS,"配置更新成功");
+            }
+            return new Result(Code.ERROR,"配置更新失败");
+        }
+        return null;
     }
 
 }
