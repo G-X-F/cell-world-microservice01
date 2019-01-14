@@ -1,0 +1,20 @@
+syntax = "proto2";
+package PB_MEUMX;
+option java_package = "com.meux.icarbonx.proto";
+
+//定义Protobuf协议交互框架类名
+option java_outer_classname = "ProtoServerConf";
+
+
+//配置文件
+message FileUpload
+{
+    repeated MultiFile multiFiles = 1;
+}
+
+
+message MultiFile
+{
+    required bytes file = 1;
+    required string name = 2;//文件名
+}

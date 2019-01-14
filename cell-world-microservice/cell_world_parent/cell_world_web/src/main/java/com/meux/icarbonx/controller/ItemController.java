@@ -5,13 +5,21 @@ import com.meux.icarbonx.service.GmToolsFeignService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/item")
 @CrossOrigin(value = "*",allowCredentials = "true")
-public class CellWordController {
+public class ItemController {
+
+    private final GmToolsFeignService gmToolsService;
+
 
     @Autowired
-    private GmToolsFeignService gmToolsService;
+    public ItemController(GmToolsFeignService gmToolsService, HttpServletRequest request) {
+        this.gmToolsService = gmToolsService;
+    }
 
     @PostMapping("/additem")
     public Result issueItems(String rid,int wid,String items,String nums){
@@ -37,9 +45,6 @@ public class CellWordController {
 
     /**
      * 发送系统邮件
-     * @param wid
-     * @param tempId
-     * @return
      */
     @PostMapping(value = "sysmail")
     public Result sendSysMail(int wid,int tempId){
@@ -48,10 +53,6 @@ public class CellWordController {
 
     /**
      * 发送定向邮件
-     * @param rid
-     * @param wid
-     * @param tempId
-     * @return
      */
     @PostMapping(value = "patchmail")
     public Result sendPatchMail(String rid,int wid,int tempId){
@@ -59,16 +60,6 @@ public class CellWordController {
         return gmToolsService.sendPatchMail(role,wid,tempId);
     }
 
-    /**
-     * 设置人物等级
-     * @param rid
-     * @param wid
-     * @param level
-     * @return
-     */
-    public Result setRoleLevel(String rid,int wid,int level){
-        long role = Long.parseLong(rid,16);
-        return gmToolsService.setRoleLevel(role,wid,level);
-    }
+
 
 }

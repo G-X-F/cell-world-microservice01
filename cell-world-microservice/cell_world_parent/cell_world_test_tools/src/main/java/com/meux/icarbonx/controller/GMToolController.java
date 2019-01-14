@@ -8,17 +8,19 @@ import com.meux.icarbonx.entities.Code;
 import com.meux.icarbonx.entities.Result;
 import com.meux.icarbonx.proto.*;
 import com.meux.icarbonx.service.TestToolService;
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.RequestContext;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
+import java.util.Random;
 
 import static com.meux.icarbonx.utis.Avatas.Array2List;
 
@@ -30,6 +32,8 @@ public class GMToolController {
     private final CommandConfig config;
 
     private final FileConfig fileConfig;
+
+
 
     @Autowired
     public GMToolController(TestToolService toolService, CommandConfig config, FileConfig fileConfig) {
@@ -162,73 +166,81 @@ public class GMToolController {
         return null;
     }
 
-    @PostMapping("/test")
-    public Result test(){
-        return new Result(1,"hello");
-    }
+
+
+
 
 //    @PostMapping("/config/update")
-//    public Result updateConfig(@RequestParam("files") MultipartFile[] files ) throws IOException {
-//        if(files.length == 0){
-//            return new Result(Code.ERROR, "文件列表为空，上传失败");
+//    public Result updateConfig(@RequestParam("file") MultipartFile file ) throws IOException {
+//        if(file.isEmpty()){
+//            return new Result(Code.ERROR,"文件为空，上传失败");
 //        }
+//        //获取文件名
+//        String oldFileName=file.getOriginalFilename();
+//        //获取文件名后缀
+//        String type = oldFileName.contains(".")?oldFileName.substring(oldFileName.lastIndexOf(".")+1):null;
+//        String fileType = fileConfig.getFileType();
+//        //校验文件类型
+//        if(type != null && fileType.contains(type)){
+//            byte[] bytes = file.getBytes();
 //
-//        for(MultipartFile file : files){
-//            if(!file.isEmpty()){
-//                //获取文件名
-//                String oldFileName=file.getOriginalFilename();
-//                //获取文件名后缀
-//                String type = oldFileName.contains(".")?oldFileName.substring(oldFileName.lastIndexOf(".")+1):null;
-//                String fileType = fileConfig.getFileType();
-//                //校验文件类型
-//                if(type != null && fileType.contains(type)){
-//                    //文件存储地址
-////                    String targetPath = fileConfig.getTargetPath();
-////                    File f = new File(targetPath + oldFileName);
-////                    file.transferTo(f);
-//
-//                    //向配置服推送数据
-//                    ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
-//                    msg.setCmd(1110);
-//                    msg.setSub(2);
-//                    msg.setBody(ByteString.copyFrom(file.getBytes()));
-//                    boolean b = toolService.sendTo(msg.build(), "http://127.0.0.1:9010");
-//                    if(b){
-//                        return new Result(Code.SUCCESS,"配置更新成功");
-//                    }
-//                    return new Result(Code.ERROR,"配置更新失败");
-//                }
+//            //向配置服推送数据
+//            ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
+//            msg.setCmd(1110);
+//            msg.setSub(2);
+//            msg.setBody(ByteString.copyFrom(file.getBytes()));
+//            boolean b = toolService.sendTo(msg.build(), "http://127.0.0.1:9010");
+//            if(b){
+//                return new Result(Code.SUCCESS,"配置更新成功");
 //            }
+//            return new Result(Code.ERROR,"配置更新失败");
 //        }
-//
 //        return null;
 //    }
 
 
-    @PostMapping("/config/update")
-    public Result updateConfig(@RequestParam("file") MultipartFile file ) throws IOException {
-        if(file.isEmpty()){
-            return new Result(Code.ERROR,"文件为空，上传失败");
-        }
-        //获取文件名
-        String oldFileName=file.getOriginalFilename();
-        //获取文件名后缀
-        String type = oldFileName.contains(".")?oldFileName.substring(oldFileName.lastIndexOf(".")+1):null;
-        String fileType = fileConfig.getFileType();
-        //校验文件类型
-        if(type != null && fileType.contains(type)){
+
+    @PostMapping(value = "/config/update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Result updateConfig(int wid,@RequestPart(value = "mfile")MultipartFile[] mfile){
+        System.out.println(mfile.length);
+        MultipartFile[] test = new MultipartFile[0];
+        try {
+            ProtoServerConf.FileUpload.Builder body = ProtoServerConf.FileUpload.newBuilder();
+            ProtoServerConf.MultiFile.Builder builder = ProtoServerConf.MultiFile.newBuilder();
+            for(MultipartFile file : mfile){
+                if(file.isEmpty())continue;
+                String filename = file.getOriginalFilename();
+                builder.setName(filename);
+                builder.setFile(ByteString.copyFrom(file.getBytes()));
+                body.addMultiFiles(builder.build());
+                builder.clear();
+            }
             //向配置服推送数据
             ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
             msg.setCmd(1110);
             msg.setSub(2);
-            msg.setBody(ByteString.copyFrom(file.getBytes()));
+            msg.setBody(body.build().toByteString());
             boolean b = toolService.sendTo(msg.build(), "http://127.0.0.1:9010");
             if(b){
                 return new Result(Code.SUCCESS,"配置更新成功");
             }
             return new Result(Code.ERROR,"配置更新失败");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }
+
+
+    @PostMapping(value = "/config/test",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Result testConfig(@RequestParam int wid,@RequestPart(value = "mfile")MultipartFile mfile){
+        try {
+            System.out.println(mfile.getOriginalFilename());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }
