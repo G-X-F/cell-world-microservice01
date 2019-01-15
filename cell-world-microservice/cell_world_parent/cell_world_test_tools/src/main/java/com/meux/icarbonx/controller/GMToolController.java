@@ -8,10 +8,6 @@ import com.meux.icarbonx.entities.Code;
 import com.meux.icarbonx.entities.Result;
 import com.meux.icarbonx.proto.*;
 import com.meux.icarbonx.service.TestToolService;
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.RequestContext;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
@@ -19,8 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.io.File;
 import java.util.List;
-import java.util.Random;
 
 import static com.meux.icarbonx.utis.Avatas.Array2List;
 
@@ -166,54 +162,20 @@ public class GMToolController {
         return null;
     }
 
+    /**
+     * 文件上传
+     */
 
-
-
-
-//    @PostMapping("/config/update")
-//    public Result updateConfig(@RequestParam("file") MultipartFile file ) throws IOException {
-//        if(file.isEmpty()){
-//            return new Result(Code.ERROR,"文件为空，上传失败");
-//        }
-//        //获取文件名
-//        String oldFileName=file.getOriginalFilename();
-//        //获取文件名后缀
-//        String type = oldFileName.contains(".")?oldFileName.substring(oldFileName.lastIndexOf(".")+1):null;
-//        String fileType = fileConfig.getFileType();
-//        //校验文件类型
-//        if(type != null && fileType.contains(type)){
-//            byte[] bytes = file.getBytes();
-//
-//            //向配置服推送数据
-//            ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
-//            msg.setCmd(1110);
-//            msg.setSub(2);
-//            msg.setBody(ByteString.copyFrom(file.getBytes()));
-//            boolean b = toolService.sendTo(msg.build(), "http://127.0.0.1:9010");
-//            if(b){
-//                return new Result(Code.SUCCESS,"配置更新成功");
-//            }
-//            return new Result(Code.ERROR,"配置更新失败");
-//        }
-//        return null;
-//    }
-
-
-
-    @PostMapping(value = "/config/update",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Result updateConfig(int wid,@RequestPart(value = "mfile")MultipartFile[] mfile){
-        System.out.println(mfile.length);
-        MultipartFile[] test = new MultipartFile[0];
+    @PostMapping(value = "/config/update",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Result updateConfig(@RequestParam("wid")int wid,@RequestPart(value = "file")MultipartFile[] file){
         try {
             ProtoServerConf.FileUpload.Builder body = ProtoServerConf.FileUpload.newBuilder();
-            ProtoServerConf.MultiFile.Builder builder = ProtoServerConf.MultiFile.newBuilder();
-            for(MultipartFile file : mfile){
-                if(file.isEmpty())continue;
-                String filename = file.getOriginalFilename();
-                builder.setName(filename);
-                builder.setFile(ByteString.copyFrom(file.getBytes()));
-                body.addMultiFiles(builder.build());
-                builder.clear();
+            for(MultipartFile  f: file){
+                if(f.isEmpty()) continue;
+                String savePath = "D:\\hello"+"/";
+                f.transferTo(new File(savePath + f.getOriginalFilename() ));
+
+                body.addFile(ByteString.copyFrom(f.getBytes()));
             }
             //向配置服推送数据
             ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
@@ -233,9 +195,10 @@ public class GMToolController {
 
 
     @PostMapping(value = "/config/test",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Result testConfig(@RequestParam int wid,@RequestPart(value = "mfile")MultipartFile mfile){
+    public Result testConfig(@RequestParam("wid") int wid,@RequestPart(value = "file")MultipartFile file){
         try {
-            System.out.println(mfile.getOriginalFilename());
+            System.out.println("========================MULTIPART============================");
+            System.out.println(file.getOriginalFilename());
         } catch (Exception e) {
             e.printStackTrace();
         }

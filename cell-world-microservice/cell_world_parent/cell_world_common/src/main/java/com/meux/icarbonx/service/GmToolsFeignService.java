@@ -7,8 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @FeignClient(value = "CELL-WORLD-TEST-TOOLS",configuration = FeignMultipartSupportConfig.class)
 public interface GmToolsFeignService {
@@ -26,8 +24,8 @@ public interface GmToolsFeignService {
     Result sendPatchMail(@RequestParam("rid")long rid,@RequestParam("wid")int wid,@RequestParam("tempId")int tempId);
 
     @RequestMapping(value = "/config/update",method = {RequestMethod.POST},produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    Result updateConfig(@RequestParam("wid") int wid,@RequestPart("mfile") MultipartFile[] mfile);
+    Result updateConfig(@RequestParam("wid") int wid,@RequestPart("file") MultipartFile[] file);
 
     @RequestMapping(value = "/config/test",method = {RequestMethod.POST},produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    Result testConfig(@RequestParam(value = "wid") int wid,@RequestPart(value = "mfile")MultipartFile mfile);
+    Result testConfig(@RequestParam(value = "wid") int wid,@RequestPart(value = "file")MultipartFile file);
 }

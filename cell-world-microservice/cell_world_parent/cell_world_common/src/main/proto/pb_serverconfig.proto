@@ -9,12 +9,6 @@ option java_outer_classname = "ProtoServerConf";
 //配置文件
 message FileUpload
 {
-    repeated MultiFile multiFiles = 1;
+    repeated  bytes file = 1;
 }
 
-
-message MultiFile
-{
-    required bytes file = 1;
-    required string name = 2;//文件名
-}

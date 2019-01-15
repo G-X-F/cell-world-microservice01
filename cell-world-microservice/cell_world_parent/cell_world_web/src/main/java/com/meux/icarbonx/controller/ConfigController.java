@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -28,14 +30,21 @@ public class ConfigController {
     }
 
     @PostMapping("/update")
-    public Result updateConfig(HttpServletRequest request) {
+    public Result updateConfig(HttpServletRequest request) throws IOException {
         MultipartHttpServletRequest params =(MultipartHttpServletRequest) request;
-        List<MultipartFile> files = params.getFiles("files");
+        List<MultipartFile> files = params.getFiles("file");
         if(files.size() <= 0)
             return new Result(Code.ERROR,"请选择配置文件");
         MultipartFile[] mfile = new MultipartFile[files.size()];
         int i = 0;
+        String savePath = "D:\\hello"+"/";
+        File target = new File(savePath);
+        if(!target.exists()){
+            target.setWritable(true);
+            target.mkdirs();
+        }
         for(MultipartFile file:files){
+            file.transferTo(new File(savePath + file.getOriginalFilename() ));
             mfile[i] = file;
             i++;
         }
@@ -46,7 +55,7 @@ public class ConfigController {
     @PostMapping("/test")
     public Result testConfig(HttpServletRequest request) {
         MultipartHttpServletRequest params =(MultipartHttpServletRequest) request;
-        List<MultipartFile> arr = params.getFiles("files");
+        List<MultipartFile> arr = params.getFiles("file");
         if(arr.size() <= 0)
             return new Result(Code.ERROR,"请选择配置文件");
         MultipartFile mfile = arr.get(0);
