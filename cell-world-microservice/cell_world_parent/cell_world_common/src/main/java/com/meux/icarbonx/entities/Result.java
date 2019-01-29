@@ -11,4 +11,7 @@ public class Result {
     int code;//状态码
     String message;//提示消息
 
+
+
+
 }

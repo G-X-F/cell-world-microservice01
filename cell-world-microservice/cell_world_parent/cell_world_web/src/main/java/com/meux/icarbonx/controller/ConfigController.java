@@ -44,7 +44,6 @@ public class ConfigController {
             target.mkdirs();
         }
         for(MultipartFile file:files){
-            file.transferTo(new File(savePath + file.getOriginalFilename() ));
             mfile[i] = file;
             i++;
         }

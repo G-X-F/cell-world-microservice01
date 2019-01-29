@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import static com.meux.icarbonx.utis.Avatas.Array2List;
@@ -172,10 +174,11 @@ public class GMToolController {
             ProtoServerConf.FileUpload.Builder body = ProtoServerConf.FileUpload.newBuilder();
             for(MultipartFile  f: file){
                 if(f.isEmpty()) continue;
-                String savePath = "D:\\hello"+"/";
-                f.transferTo(new File(savePath + f.getOriginalFilename() ));
+//                String savePath = "D:\\hello"+"/";
+//                String location = savePath.replace("\\","/");
+//                f.transferTo(new File(location + f.getOriginalFilename() ));
 
-                body.addFile(ByteString.copyFrom(f.getBytes()));
+                //body.addFile(ByteString.copyFrom(f.getBytes()));
             }
             //向配置服推送数据
             ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
@@ -194,11 +197,31 @@ public class GMToolController {
     }
 
 
-    @PostMapping(value = "/config/test",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/config/test",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Result testConfig(@RequestParam("wid") int wid,@RequestPart(value = "file")MultipartFile file){
         try {
             System.out.println("========================MULTIPART============================");
             System.out.println(file.getOriginalFilename());
+            String savePath = "D:\\hello/";
+            File targetFile = new File(savePath + file.getOriginalFilename());
+            if(!targetFile.exists()) targetFile.createNewFile();
+            OutputStream out = new FileOutputStream(targetFile);
+            out.write(file.getBytes());
+
+            ProtoServerConf.FileUpload.Builder body = ProtoServerConf.FileUpload.newBuilder();
+
+            ProtoServerConf.MultiFile.Builder mFile = ProtoServerConf.MultiFile.newBuilder();
+            mFile.setName(file.getOriginalFilename());
+            mFile.setFile(ByteString.copyFrom(file.getBytes()));
+
+            body.addMultiFiles(mFile.build());
+
+            ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
+            msg.setCmd(1110);
+            msg.setSub(2);
+            msg.setBody(body.build().toByteString());
+            boolean b = toolService.sendTo(msg.build(), "http://127.0.0.1:9010");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
