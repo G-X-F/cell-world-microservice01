@@ -8,7 +8,7 @@ eureka:
   client:
     fetch-registry: false
     register-with-eureka: false
-    server-url:
+    service-url:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 logging:
