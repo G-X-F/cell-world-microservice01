@@ -30,19 +30,13 @@ public class ConfigController {
     }
 
     @PostMapping("/update")
-    public Result updateConfig(HttpServletRequest request) throws IOException {
+    public Result updateConfig(HttpServletRequest request){
         MultipartHttpServletRequest params =(MultipartHttpServletRequest) request;
         List<MultipartFile> files = params.getFiles("file");
         if(files.size() <= 0)
             return new Result(Code.ERROR,"请选择配置文件");
         MultipartFile[] mfile = new MultipartFile[files.size()];
         int i = 0;
-        String savePath = "D:\\hello"+"/";
-        File target = new File(savePath);
-        if(!target.exists()){
-            target.setWritable(true);
-            target.mkdirs();
-        }
         for(MultipartFile file:files){
             mfile[i] = file;
             i++;

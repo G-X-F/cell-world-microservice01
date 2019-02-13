@@ -35,6 +35,9 @@ command:
 
   url: http://127.0.0.1:9016
 
-fileConfig:
-  fileType: xls,bytes
-  targetPath: D:\\cellword-config\
+propertyConfig:
+  type: xls,bytes
+  wordMap: {1: "10.0.0.9:80",2: "10.0.0.9:81",3: "10.0.0.12:9010",4: "10.0.160.192:9010",5: "127.0.0.1:9010"}
+  cmd: 1110
+  sub: 2
+

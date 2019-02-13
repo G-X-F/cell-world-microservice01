@@ -5,11 +5,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * 邮件
+ */
+
 @Configuration
 @ConfigurationProperties(prefix = "command")
 @Data
 @NoArgsConstructor
-public class CommandConfig {
+public class MailConfig {
     private Integer cmd;
     /**
      * 系统邮件

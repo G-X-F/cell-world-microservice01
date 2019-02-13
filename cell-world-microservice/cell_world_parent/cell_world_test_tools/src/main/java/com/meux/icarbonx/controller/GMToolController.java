@@ -2,8 +2,8 @@ package com.meux.icarbonx.controller;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.meux.icarbonx.configuration.CommandConfig;
-import com.meux.icarbonx.configuration.FileConfig;
+import com.meux.icarbonx.configuration.MailConfig;
+import com.meux.icarbonx.configuration.ServerPropertyConfig;
 import com.meux.icarbonx.entities.Code;
 import com.meux.icarbonx.entities.Result;
 import com.meux.icarbonx.proto.*;
@@ -27,17 +27,17 @@ public class GMToolController {
 
     private final TestToolService toolService;
 
-    private final CommandConfig config;
+    private final MailConfig mailConfig;
 
-    private final FileConfig fileConfig;
+    private final ServerPropertyConfig propertyConfigConfig;
 
 
 
     @Autowired
-    public GMToolController(TestToolService toolService, CommandConfig config, FileConfig fileConfig) {
+    public GMToolController(TestToolService toolService, MailConfig config, ServerPropertyConfig fileConfig) {
         this.toolService = toolService;
-        this.config = config;
-        this.fileConfig = fileConfig;
+        this.mailConfig = config;
+        this.propertyConfigConfig = fileConfig;
     }
 
     /**
@@ -61,11 +61,11 @@ public class GMToolController {
             body.addAllNums(num);
 
             ProtobuffFrame.Request.Builder request = ProtobuffFrame.Request.newBuilder();
-            request.setCmd(config.getCmd());
-            request.setSub(config.getSub_03());
+            request.setCmd(mailConfig.getCmd());
+            request.setSub(mailConfig.getSub_03());
             request.setBody(body.build().toByteString());
 
-            boolean b = toolService.sendTo(request.build(),config.getUrl());
+            boolean b = toolService.sendTo(request.build(), mailConfig.getUrl());
             if(b){
                 return new Result(Code.SUCCESS,"发放成功");
             }
@@ -91,11 +91,11 @@ public class GMToolController {
             body.setLevel(level);
 
             ProtobuffFrame.Request.Builder request = ProtobuffFrame.Request.newBuilder();
-            request.setCmd(config.getCmd());
-            request.setSub(config.getSub_04());
+            request.setCmd(mailConfig.getCmd());
+            request.setSub(mailConfig.getSub_04());
             request.setBody(body.build().toByteString());
 
-            boolean b = toolService.sendTo(request.build(),config.getUrl());
+            boolean b = toolService.sendTo(request.build(), mailConfig.getUrl());
             if(b){
                 return new Result(Code.SUCCESS,"等级设置成功");
             }
@@ -120,11 +120,11 @@ public class GMToolController {
             body.setTempId(tempId);
 
             ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
-            msg.setCmd(config.getCmd());
-            msg.setSub(config.getSub_01());
+            msg.setCmd(mailConfig.getCmd());
+            msg.setSub(mailConfig.getSub_01());
             msg.setBody(body.build().toByteString());
 
-            boolean b = toolService.sendTo(msg.build(),config.getUrl());
+            boolean b = toolService.sendTo(msg.build(), mailConfig.getUrl());
             if(b){
                 return new Result(Code.SUCCESS,"邮件发送成功");
             }
@@ -150,10 +150,10 @@ public class GMToolController {
             body.setRid(rid);
 
             ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
-            msg.setCmd(config.getCmd());
-            msg.setSub(config.getSub_02());
+            msg.setCmd(mailConfig.getCmd());
+            msg.setSub(mailConfig.getSub_02());
             msg.setBody(body.build().toByteString());
-            boolean b = toolService.sendTo(msg.build(),config.getUrl());
+            boolean b = toolService.sendTo(msg.build(), mailConfig.getUrl());
             if(b){
                 return new Result(Code.SUCCESS,"邮件发送成功");
             }
@@ -169,23 +169,24 @@ public class GMToolController {
      */
 
     @PostMapping(value = "/config/update",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Result updateConfig(@RequestParam("wid")int wid,@RequestPart(value = "file")MultipartFile[] file){
+    public Result updateConfig(@RequestParam("wid")Integer wid,@RequestPart(value = "file")MultipartFile[] file){
         try {
             ProtoServerConf.FileUpload.Builder body = ProtoServerConf.FileUpload.newBuilder();
+            ProtoServerConf.MultiFile.Builder mFile = ProtoServerConf.MultiFile.newBuilder();
             for(MultipartFile  f: file){
                 if(f.isEmpty()) continue;
-//                String savePath = "D:\\hello"+"/";
-//                String location = savePath.replace("\\","/");
-//                f.transferTo(new File(location + f.getOriginalFilename() ));
-
-                //body.addFile(ByteString.copyFrom(f.getBytes()));
+                mFile.setName(f.getOriginalFilename());
+                mFile.setFile(ByteString.copyFrom(f.getBytes()));
+                body.addMultiFiles(mFile.build());
+                mFile.clear();
             }
             //向配置服推送数据
             ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
-            msg.setCmd(1110);
-            msg.setSub(2);
+            msg.setCmd(propertyConfigConfig.getCmd());
+            msg.setSub(propertyConfigConfig.getSub());
             msg.setBody(body.build().toByteString());
-            boolean b = toolService.sendTo(msg.build(), "http://127.0.0.1:9010");
+            String url = propertyConfigConfig.getWordMap().get(wid);
+            boolean b = toolService.sendTo(msg.build(), "http://" + url);
             if(b){
                 return new Result(Code.SUCCESS,"配置更新成功");
             }

@@ -5,11 +5,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 @Configuration
-@ConfigurationProperties(prefix = "fileConfig")
+@ConfigurationProperties(prefix = "propertyConfig")
 @Data
 @NoArgsConstructor
-public class FileConfig {
-    private String fileType;
-    private String targetPath;
+public class ServerPropertyConfig {
+    private String type;
+    private Map<Integer,String> wordMap;
+    private Integer cmd;
+    private Integer sub;
 }
