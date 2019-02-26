@@ -16,8 +16,8 @@ import java.util.List;
 @Configuration
 public class EnableInterceptor {
     @Bean
-    public WebMvcConfigurer webMvcConfigurer(){
-        return new WebMvcConfigurer(){
+    public WebMvcConfigurer webMvcConfigurer() {
+        return new WebMvcConfigurer() {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
                 //registry.addViewController("/").setViewName("index");

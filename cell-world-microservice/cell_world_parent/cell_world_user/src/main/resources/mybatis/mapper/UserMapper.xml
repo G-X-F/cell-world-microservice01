@@ -7,7 +7,7 @@
         select uid,username,password from cell_world_user where username= #{username} and password = #{password};
     </select>
 
-    <insert id="addAccount" parameterType="User" >
+    <insert id="addAccount" parameterType="User">
         insert into cell_world_user (username,password) values(#{username},#{password});
     </insert>
     <delete id="deleteAccount" parameterType="Integer">

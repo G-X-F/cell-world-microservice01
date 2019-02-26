@@ -17,28 +17,28 @@ public class HttpClientService {
     /**
      * 向指定服务器发送post请求
      */
-    public ProtobuffFrame.Response sendPost(ProtobuffFrame.Request request,String targetUrl ) throws InvalidProtocolBufferException {
+    public ProtobuffFrame.Response sendPost(ProtobuffFrame.Request request, String targetUrl) throws InvalidProtocolBufferException {
 
         String content_type = "application/octet-stream;charset=utf-8";
-        byte[] result = sendPost(targetUrl,request.toByteArray(),content_type);
+        byte[] result = sendPost(targetUrl, request.toByteArray(), content_type);
         return ProtobuffFrame.Response.parseFrom(result);
     }
 
 
-
     /**
      * 向指定 URL 发送POST方法的请求
-     * @param url 发送请求的 URL
+     *
+     * @param url  发送请求的 URL
      * @param data 请求数据
      * @return 所代表远程资源的响应结果
      */
-    private byte[] sendPost(String url, byte[] data,String content_type){
+    private byte[] sendPost(String url, byte[] data, String content_type) {
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
         HttpURLConnection conn = null;
         try {
             URL realUrl = new URL(url);
             // 打开和URL之间的连接
-            conn =(HttpURLConnection)  realUrl.openConnection();
+            conn = (HttpURLConnection) realUrl.openConnection();
             conn.setConnectTimeout(15000);
             // 设置通用的请求属性
             conn.setRequestMethod("POST");
@@ -56,22 +56,22 @@ public class HttpClientService {
             // flush输出流的缓冲
             out.flush();
             out.close();
-            if(conn.getResponseCode() == 200 ) {
+            if (conn.getResponseCode() == 200) {
                 // 定义BufferedReader输入流来读取URL的响应
                 InputStream in = conn.getInputStream();
 
                 byte[] buff = new byte[1024];
                 int length;
                 while ((length = in.read(buff)) != -1) {
-                    swapStream.write(buff,0,length);
+                    swapStream.write(buff, 0, length);
                 }
                 in.close();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-        }finally {
-            if(conn!= null) conn.disconnect();
+        } finally {
+            if (conn != null) conn.disconnect();
         }
 
         return swapStream.toByteArray();

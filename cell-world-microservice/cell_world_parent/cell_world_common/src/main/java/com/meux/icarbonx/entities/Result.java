@@ -12,6 +12,4 @@ public class Result {
     String message;//提示消息
 
 
-
-
 }

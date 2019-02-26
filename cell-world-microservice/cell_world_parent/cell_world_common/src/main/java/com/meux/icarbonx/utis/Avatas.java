@@ -29,10 +29,11 @@ public class Avatas {
 
     /**
      * 得到的list 不包含0
+     *
      * @param array
      * @return
      */
-    public static List<Integer> Array2List(String[] array){
+    public static List<Integer> Array2List(String[] array) {
         List<Integer> list = new ArrayList<>();
         if (array != null && array.length > 0) {
             for (int i = 0; i < array.length; i++) {

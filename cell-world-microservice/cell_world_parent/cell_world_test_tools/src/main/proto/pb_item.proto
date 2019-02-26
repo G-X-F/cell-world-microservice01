@@ -7,30 +7,28 @@ option java_outer_classname = "PbItem";
 
 //添加物品 请求参数
 message AddItem {
-    required sint32 wid = 1;               //世界wid
-    required sint64 rid = 2;               //角色rid
-    repeated sint32 itemId = 3;            //物品id
-    repeated sint32 nums = 4;              //物品数量
+    required sint32 wid = 1; //世界wid
+    required sint64 rid = 2; //角色rid
+    repeated sint32 itemId = 3; //物品id
+    repeated sint32 nums = 4; //物品数量
 }
-
 
 //设置角色等级 请求参数
 message SetRoleLevel {
-    required sint32 wid = 1;               //世界wid
-    required sint64 rid = 2;               //角色rid
-    required sint32 level = 3;             //等级level
+    required sint32 wid = 1; //世界wid
+    required sint64 rid = 2; //角色rid
+    required sint32 level = 3; //等级level
 }
-
 
 //系统邮件http 请求参数
 message SysMail {
-    required sint32 wid = 1;              //世界服id
-    required sint32 tempId = 2;           //邮件模板id
+    required sint32 wid = 1; //世界服id
+    required sint32 tempId = 2; //邮件模板id
 }
 
 //定向邮件http 请求参数
 message PatchMail {
-    required sint32 wid = 1;              //世界服id
-    required sint32 tempId = 2;           //邮件模板id
-    required sint64 rid = 3;              //角色ID
+    required sint32 wid = 1; //世界服id
+    required sint32 tempId = 2; //邮件模板id
+    required sint64 rid = 3; //角色ID
 }

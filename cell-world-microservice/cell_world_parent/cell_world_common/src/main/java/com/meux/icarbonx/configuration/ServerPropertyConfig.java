@@ -13,7 +13,7 @@ import java.util.Map;
 @NoArgsConstructor
 public class ServerPropertyConfig {
     private String type;
-    private Map<Integer,String> wordMap;
+    private Map<Integer, String> wordMap;
     private Integer cmd;
     private Integer sub;
 }

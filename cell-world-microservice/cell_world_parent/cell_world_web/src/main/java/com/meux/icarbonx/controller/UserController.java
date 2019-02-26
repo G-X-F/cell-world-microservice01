@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(value = "*",allowCredentials = "true")
+@CrossOrigin(value = "*", allowCredentials = "true")
 public class UserController {
 
     @Autowired
@@ -20,16 +20,17 @@ public class UserController {
 
     /**
      * 登陆
-     * @param username  用户名
-     * @param password  密码
+     *
+     * @param username 用户名
+     * @param password 密码
      */
     @PostMapping("/login")
-    public User login(String username, String password){
+    public User login(String username, String password) {
         System.out.println("请求过来了");
         User user = userFeignService.login(username, password);
         System.out.println(user);
-        if(null != user){
-            request.getSession().setAttribute("account",user);
+        if (null != user) {
+            request.getSession().setAttribute("account", user);
         }
         return user;
     }

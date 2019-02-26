@@ -32,7 +32,6 @@ public class GMToolController {
     private final ServerPropertyConfig propertyConfigConfig;
 
 
-
     @Autowired
     public GMToolController(TestToolService toolService, MailConfig config, ServerPropertyConfig fileConfig) {
         this.toolService = toolService;
@@ -44,10 +43,10 @@ public class GMToolController {
      * 发放道具
      */
     @GetMapping("/item/additem")
-    public Result issueItems(long rid, int wid, String items, String nums){
+    public Result issueItems(long rid, int wid, String items, String nums) {
         try {
-            if(StringUtils.isEmpty(items)|| StringUtils.isEmpty(nums)){
-                return new Result(Code.ERROR,"参数不能为空");
+            if (StringUtils.isEmpty(items) || StringUtils.isEmpty(nums)) {
+                return new Result(Code.ERROR, "参数不能为空");
             }
             String[] itemstr = items.split(",");
             String[] numstr = nums.split(",");
@@ -66,10 +65,10 @@ public class GMToolController {
             request.setBody(body.build().toByteString());
 
             boolean b = toolService.sendTo(request.build(), mailConfig.getUrl());
-            if(b){
-                return new Result(Code.SUCCESS,"发放成功");
+            if (b) {
+                return new Result(Code.SUCCESS, "发放成功");
             }
-            return new Result(Code.ERROR,"发放失败");
+            return new Result(Code.ERROR, "发放失败");
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -80,10 +79,10 @@ public class GMToolController {
      * 设置角色等级
      */
     @PostMapping("/item/setlevel")
-    public Result setRoleLevel(long rid, int wid,int level){
+    public Result setRoleLevel(long rid, int wid, int level) {
         try {
-            if(StringUtils.isEmpty(rid) ||StringUtils.isEmpty(wid)||StringUtils.isEmpty(level) ){
-                return new Result(Code.ERROR,"参数不能为空");
+            if (StringUtils.isEmpty(rid) || StringUtils.isEmpty(wid) || StringUtils.isEmpty(level)) {
+                return new Result(Code.ERROR, "参数不能为空");
             }
             PbItem.SetRoleLevel.Builder body = PbItem.SetRoleLevel.newBuilder();
             body.setRid(rid);
@@ -96,10 +95,10 @@ public class GMToolController {
             request.setBody(body.build().toByteString());
 
             boolean b = toolService.sendTo(request.build(), mailConfig.getUrl());
-            if(b){
-                return new Result(Code.SUCCESS,"等级设置成功");
+            if (b) {
+                return new Result(Code.SUCCESS, "等级设置成功");
             }
-            return new Result(Code.ERROR,"等级设置失败");
+            return new Result(Code.ERROR, "等级设置失败");
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -110,9 +109,9 @@ public class GMToolController {
      * 发送全服邮件
      */
     @PostMapping("/item/sysmail")
-    public Result sendSysMail(int wid,int tempId){
+    public Result sendSysMail(int wid, int tempId) {
         try {
-            if(StringUtils.isEmpty(wid)|| StringUtils.isEmpty(tempId)) {
+            if (StringUtils.isEmpty(wid) || StringUtils.isEmpty(tempId)) {
                 return new Result(Code.ERROR, "参数不能为空");
             }
             PbItem.SysMail.Builder body = PbItem.SysMail.newBuilder();
@@ -125,10 +124,10 @@ public class GMToolController {
             msg.setBody(body.build().toByteString());
 
             boolean b = toolService.sendTo(msg.build(), mailConfig.getUrl());
-            if(b){
-                return new Result(Code.SUCCESS,"邮件发送成功");
+            if (b) {
+                return new Result(Code.SUCCESS, "邮件发送成功");
             }
-            return new Result(Code.ERROR,"邮件发送失败");
+            return new Result(Code.ERROR, "邮件发送失败");
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -139,9 +138,9 @@ public class GMToolController {
      * 发送定向邮件
      */
     @PostMapping("/item/patchmail")
-    public Result sendPatchMail(long rid,int wid,int tempId){
+    public Result sendPatchMail(long rid, int wid, int tempId) {
         try {
-            if(StringUtils.isEmpty(wid)|| StringUtils.isEmpty(tempId)||StringUtils.isEmpty(rid)) {
+            if (StringUtils.isEmpty(wid) || StringUtils.isEmpty(tempId) || StringUtils.isEmpty(rid)) {
                 return new Result(Code.ERROR, "参数不能为空");
             }
             PbItem.PatchMail.Builder body = PbItem.PatchMail.newBuilder();
@@ -154,10 +153,10 @@ public class GMToolController {
             msg.setSub(mailConfig.getSub_02());
             msg.setBody(body.build().toByteString());
             boolean b = toolService.sendTo(msg.build(), mailConfig.getUrl());
-            if(b){
-                return new Result(Code.SUCCESS,"邮件发送成功");
+            if (b) {
+                return new Result(Code.SUCCESS, "邮件发送成功");
             }
-            return new Result(Code.ERROR,"邮件发送失败");
+            return new Result(Code.ERROR, "邮件发送失败");
         } catch (InvalidProtocolBufferException e) {
             e.printStackTrace();
         }
@@ -168,13 +167,13 @@ public class GMToolController {
      * 文件上传
      */
 
-    @PostMapping(value = "/config/update",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Result updateConfig(@RequestParam("wid")Integer wid,@RequestPart(value = "file")MultipartFile[] file){
+    @PostMapping(value = "/config/update", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Result updateConfig(@RequestParam("wid") Integer wid, @RequestPart(value = "file") MultipartFile[] file) {
         try {
             ProtoServerConf.FileUpload.Builder body = ProtoServerConf.FileUpload.newBuilder();
             ProtoServerConf.MultiFile.Builder mFile = ProtoServerConf.MultiFile.newBuilder();
-            for(MultipartFile  f: file){
-                if(f.isEmpty()) continue;
+            for (MultipartFile f : file) {
+                if (f.isEmpty()) continue;
                 mFile.setName(f.getOriginalFilename());
                 mFile.setFile(ByteString.copyFrom(f.getBytes()));
                 body.addMultiFiles(mFile.build());
@@ -187,10 +186,10 @@ public class GMToolController {
             msg.setBody(body.build().toByteString());
             String url = propertyConfigConfig.getWordMap().get(wid);
             boolean b = toolService.sendTo(msg.build(), "http://" + url);
-            if(b){
-                return new Result(Code.SUCCESS,"配置更新成功");
+            if (b) {
+                return new Result(Code.SUCCESS, "配置更新成功");
             }
-            return new Result(Code.ERROR,"配置更新失败");
+            return new Result(Code.ERROR, "配置更新失败");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -198,14 +197,14 @@ public class GMToolController {
     }
 
 
-    @PostMapping(value = "/config/test",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Result testConfig(@RequestParam("wid") int wid,@RequestPart(value = "file")MultipartFile file){
+    @PostMapping(value = "/config/test", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE}, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Result testConfig(@RequestParam("wid") int wid, @RequestPart(value = "file") MultipartFile file) {
         try {
             System.out.println("========================MULTIPART============================");
             System.out.println(file.getOriginalFilename());
             String savePath = "D:\\hello/";
             File targetFile = new File(savePath + file.getOriginalFilename());
-            if(!targetFile.exists()) targetFile.createNewFile();
+            if (!targetFile.exists()) targetFile.createNewFile();
             OutputStream out = new FileOutputStream(targetFile);
             out.write(file.getBytes());
 

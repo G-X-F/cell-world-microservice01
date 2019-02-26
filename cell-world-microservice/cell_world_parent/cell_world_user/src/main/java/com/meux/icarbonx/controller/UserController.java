@@ -14,9 +14,9 @@ public class UserController {
 
 
     @PostMapping("/user/login")
-    public User login(String username, String password){
-        if(username.equals("123") && password.equals("123")){
-            return new User(username,password);
+    public User login(String username, String password) {
+        if (username.equals("123") && password.equals("123")) {
+            return new User(username, password);
         }
 //        User user = new User(username,password);
 //        return userService.queryAccount(user);
