@@ -8,18 +8,21 @@ import java.util.List;
 public interface UserDao {
     /**
      * 登陆
+     *
      * @return
      */
     User queryAccount(User user);
 
     /**
      * 添加一个账号
+     *
      * @return
      */
     Integer addAccount(User user);
 
     /**
      * 删除一个账号
+     *
      * @param uid
      * @return
      */
@@ -27,6 +30,7 @@ public interface UserDao {
 
     /**
      * 查询所有的账号
+     *
      * @return
      */
     List<User> queryAllAccount();

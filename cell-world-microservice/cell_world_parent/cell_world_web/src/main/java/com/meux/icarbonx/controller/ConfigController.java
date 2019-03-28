@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/config")
-@CrossOrigin(value = "*",allowCredentials = "true")
+@CrossOrigin(value = "*", allowCredentials = "true")
 public class ConfigController {
 
     private final GmToolsFeignService gmToolsService;
@@ -30,29 +30,29 @@ public class ConfigController {
     }
 
     @PostMapping("/update")
-    public Result updateConfig(HttpServletRequest request){
-        MultipartHttpServletRequest params =(MultipartHttpServletRequest) request;
+    public Result updateConfig(HttpServletRequest request) {
+        MultipartHttpServletRequest params = (MultipartHttpServletRequest) request;
         List<MultipartFile> files = params.getFiles("file");
-        if(files.size() <= 0)
-            return new Result(Code.ERROR,"请选择配置文件");
+        if (files.size() <= 0)
+            return new Result(Code.ERROR, "请选择配置文件");
         MultipartFile[] mfile = new MultipartFile[files.size()];
         int i = 0;
-        for(MultipartFile file:files){
+        for (MultipartFile file : files) {
             mfile[i] = file;
             i++;
         }
         int wid = Integer.parseInt(params.getParameter("wid"));
-        return gmToolsService.updateConfig(wid,mfile);
+        return gmToolsService.updateConfig(wid, mfile);
     }
 
     @PostMapping("/test")
     public Result testConfig(HttpServletRequest request) {
-        MultipartHttpServletRequest params =(MultipartHttpServletRequest) request;
+        MultipartHttpServletRequest params = (MultipartHttpServletRequest) request;
         List<MultipartFile> arr = params.getFiles("file");
-        if(arr.size() <= 0)
-            return new Result(Code.ERROR,"请选择配置文件");
+        if (arr.size() <= 0)
+            return new Result(Code.ERROR, "请选择配置文件");
         MultipartFile mfile = arr.get(0);
         int wid = Integer.parseInt(params.getParameter("wid"));
-        return gmToolsService.testConfig(wid,mfile);
+        return gmToolsService.testConfig(wid, mfile);
     }
 }

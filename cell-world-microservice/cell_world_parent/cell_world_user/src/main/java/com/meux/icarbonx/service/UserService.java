@@ -16,36 +16,40 @@ public class UserService {
 
     /**
      * 用户登陆
+     *
      * @return
      */
-    public User queryAccount(User user){
+    public User queryAccount(User user) {
 
         return userDao.queryAccount(user);
     }
 
     /**
      * 添加账号
+     *
      * @return
      */
     public boolean addAccount(User user) throws IOException {
 
-        return userDao.addAccount(user)==1;
+        return userDao.addAccount(user) == 1;
     }
 
     /**
      * 删除账号
+     *
      * @param uid
      * @return
      */
-    public boolean deleteAccount(Integer uid){
-        return userDao.deleteAccount(uid)==1;
+    public boolean deleteAccount(Integer uid) {
+        return userDao.deleteAccount(uid) == 1;
     }
 
     /**
      * 查询所有的账号
+     *
      * @return
      */
-    public List<User> queryAllAccount(){
+    public List<User> queryAllAccount() {
         return userDao.queryAllAccount();
     }
 

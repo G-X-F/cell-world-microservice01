@@ -20,10 +20,8 @@ public class GmToolService {
 
     public boolean sendTo(ProtobuffFrame.Request request, String url) throws InvalidProtocolBufferException {
         ProtobuffFrame.Response response = service.sendPost(request, url);
-        return null != response && response.getCode()==0;
+        return null != response && response.getCode() == 0;
     }
-
-
 
 
 }

@@ -65,7 +65,7 @@ public class FeignMultipartSupportConfig {
             } else if (bodyType.equals(MultipartFile[].class)) {
                 // MultipartFile数组处理
                 MultipartFile[] file = (MultipartFile[]) object;
-                if(file != null) {
+                if (file != null) {
                     Map data = Collections.singletonMap(file.length == 0 ? "" : file[0].getName(), object);
                     super.encode(data, MAP_STRING_WILDCARD, template);
                     return;
