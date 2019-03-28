@@ -7,7 +7,9 @@ import com.meux.icarbonx.configuration.ServerPropertyConfig;
 import com.meux.icarbonx.entities.Code;
 import com.meux.icarbonx.entities.Result;
 import com.meux.icarbonx.proto.*;
-import com.meux.icarbonx.service.TestToolService;
+import com.meux.icarbonx.service.GmToolService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
@@ -25,7 +27,9 @@ import static com.meux.icarbonx.utis.Avatas.Array2List;
 @RestController
 public class GMToolController {
 
-    private final TestToolService toolService;
+    private Logger logger = LoggerFactory.getLogger(GMToolController.class);
+
+    private final GmToolService toolService;
 
     private final MailConfig mailConfig;
 
@@ -34,7 +38,7 @@ public class GMToolController {
 
 
     @Autowired
-    public GMToolController(TestToolService toolService, MailConfig config, ServerPropertyConfig fileConfig) {
+    public GMToolController(GmToolService toolService, MailConfig config, ServerPropertyConfig fileConfig) {
         this.toolService = toolService;
         this.mailConfig = config;
         this.propertyConfigConfig = fileConfig;
@@ -70,7 +74,7 @@ public class GMToolController {
                 return new Result(Code.SUCCESS,"发放成功");
             }
             return new Result(Code.ERROR,"发放失败");
-        } catch (InvalidProtocolBufferException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -170,6 +174,7 @@ public class GMToolController {
 
     @PostMapping(value = "/config/update",produces = {MediaType.APPLICATION_JSON_UTF8_VALUE},consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Result updateConfig(@RequestParam("wid")Integer wid,@RequestPart(value = "file")MultipartFile[] file){
+        logger.info("更新服务器配置");
         try {
             ProtoServerConf.FileUpload.Builder body = ProtoServerConf.FileUpload.newBuilder();
             ProtoServerConf.MultiFile.Builder mFile = ProtoServerConf.MultiFile.newBuilder();
@@ -188,8 +193,10 @@ public class GMToolController {
             String url = propertyConfigConfig.getWordMap().get(wid);
             boolean b = toolService.sendTo(msg.build(), "http://" + url);
             if(b){
+                logger.info("更新服务器配置成功");
                 return new Result(Code.SUCCESS,"配置更新成功");
             }
+            logger.info("更新服务器配置失败");
             return new Result(Code.ERROR,"配置更新失败");
         } catch (Exception e) {
             e.printStackTrace();

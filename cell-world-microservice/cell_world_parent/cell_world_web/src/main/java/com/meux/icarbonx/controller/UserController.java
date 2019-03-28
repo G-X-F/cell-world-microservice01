@@ -34,5 +34,10 @@ public class UserController {
         return user;
     }
 
+    public static void main(String[] args) {
+        String op = "abcdefg";
+        System.out.println(op.substring(1,3));
+    }
+
 
 }

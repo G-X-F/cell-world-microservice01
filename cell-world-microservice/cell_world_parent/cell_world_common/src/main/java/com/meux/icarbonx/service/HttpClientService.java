@@ -4,9 +4,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import com.meux.icarbonx.proto.*;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -18,7 +16,6 @@ public class HttpClientService {
      * 向指定服务器发送post请求
      */
     public ProtobuffFrame.Response sendPost(ProtobuffFrame.Request request,String targetUrl ) throws InvalidProtocolBufferException {
-
         String content_type = "application/octet-stream;charset=utf-8";
         byte[] result = sendPost(targetUrl,request.toByteArray(),content_type);
         return ProtobuffFrame.Response.parseFrom(result);
@@ -32,9 +29,10 @@ public class HttpClientService {
      * @param data 请求数据
      * @return 所代表远程资源的响应结果
      */
-    private byte[] sendPost(String url, byte[] data,String content_type){
+    private byte[] sendPost(String url, byte[] data,String content_type)  {
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
         HttpURLConnection conn = null;
+        OutputStream out = null;
         try {
             URL realUrl = new URL(url);
             // 打开和URL之间的连接
@@ -49,16 +47,16 @@ public class HttpClientService {
             // 发送POST请求必须设置如下两行
             conn.setDoOutput(true);
             conn.setDoInput(true);
+            conn.setUseCaches(false);
             // 获取URLConnection对象对应的输出流
-            OutputStream out = conn.getOutputStream();
+            out = new DataOutputStream(conn.getOutputStream());
             // 发送请求参数
             out.write(data);
             // flush输出流的缓冲
             out.flush();
-            out.close();
             if(conn.getResponseCode() == 200 ) {
                 // 定义BufferedReader输入流来读取URL的响应
-                InputStream in = conn.getInputStream();
+                InputStream in = new DataInputStream(conn.getInputStream());
 
                 byte[] buff = new byte[1024];
                 int length;
@@ -72,6 +70,13 @@ public class HttpClientService {
             e.printStackTrace();
         }finally {
             if(conn!= null) conn.disconnect();
+            if(null != out) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
         return swapStream.toByteArray();

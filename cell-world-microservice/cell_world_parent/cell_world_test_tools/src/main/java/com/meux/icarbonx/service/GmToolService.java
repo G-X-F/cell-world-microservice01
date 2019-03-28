@@ -1,20 +1,20 @@
 package com.meux.icarbonx.service;
 
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.meux.icarbonx.entities.Result;
 import com.meux.icarbonx.proto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
-public class TestToolService {
+public class GmToolService {
 
     private final HttpClientService service;
 
     @Autowired
-    public TestToolService(HttpClientService service) {
+    public GmToolService(HttpClientService service) {
         this.service = service;
     }
 
