@@ -28,4 +28,7 @@ public interface GmToolsFeignService {
 
     @RequestMapping(value = "/config/test", method = {RequestMethod.POST}, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE}, consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     Result testConfig(@RequestParam(value = "wid") int wid, @RequestPart(value = "file") MultipartFile file);
+
+    @RequestMapping(value = "/stage/unlockAllStage",method = {RequestMethod.POST})
+    Result unlockAllStage(@RequestParam("wid") int wid,@RequestParam("rid") long rid);
 }

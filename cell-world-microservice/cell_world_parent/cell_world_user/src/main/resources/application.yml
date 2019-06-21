@@ -1,7 +1,6 @@
 server:
   port: 8002
 
-
 mybatis:
   config-location: classpath:mybatis/mybatis.cfg.xml
   type-aliases-package: com.meux.icarbonx.entities

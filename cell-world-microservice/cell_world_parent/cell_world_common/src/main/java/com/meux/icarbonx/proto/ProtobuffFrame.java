@@ -54,10 +54,27 @@ public final class ProtobuffFrame {
 
     /**
      * <pre>
+     *版本序列号
+     * </pre>
+     *
+     * <code>optional sint32 sid = 3;</code>
+     */
+    boolean hasSid();
+    /**
+     * <pre>
+     *版本序列号
+     * </pre>
+     *
+     * <code>optional sint32 sid = 3;</code>
+     */
+    int getSid();
+
+    /**
+     * <pre>
      *数据 body
      * </pre>
      *
-     * <code>optional bytes body = 3;</code>
+     * <code>optional bytes body = 4;</code>
      */
     boolean hasBody();
     /**
@@ -65,7 +82,7 @@ public final class ProtobuffFrame {
      *数据 body
      * </pre>
      *
-     * <code>optional bytes body = 3;</code>
+     * <code>optional bytes body = 4;</code>
      */
     com.google.protobuf.ByteString getBody();
   }
@@ -88,6 +105,7 @@ public final class ProtobuffFrame {
     private Request() {
       cmd_ = 0;
       sub_ = 0;
+      sid_ = 0;
       body_ = com.google.protobuf.ByteString.EMPTY;
     }
 
@@ -129,8 +147,13 @@ public final class ProtobuffFrame {
               sub_ = input.readSInt32();
               break;
             }
-            case 26: {
+            case 24: {
               bitField0_ |= 0x00000004;
+              sid_ = input.readSInt32();
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000008;
               body_ = input.readBytes();
               break;
             }
@@ -205,24 +228,47 @@ public final class ProtobuffFrame {
       return sub_;
     }
 
-    public static final int BODY_FIELD_NUMBER = 3;
+    public static final int SID_FIELD_NUMBER = 3;
+    private int sid_;
+    /**
+     * <pre>
+     *版本序列号
+     * </pre>
+     *
+     * <code>optional sint32 sid = 3;</code>
+     */
+    public boolean hasSid() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <pre>
+     *版本序列号
+     * </pre>
+     *
+     * <code>optional sint32 sid = 3;</code>
+     */
+    public int getSid() {
+      return sid_;
+    }
+
+    public static final int BODY_FIELD_NUMBER = 4;
     private com.google.protobuf.ByteString body_;
     /**
      * <pre>
      *数据 body
      * </pre>
      *
-     * <code>optional bytes body = 3;</code>
+     * <code>optional bytes body = 4;</code>
      */
     public boolean hasBody() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
      * <pre>
      *数据 body
      * </pre>
      *
-     * <code>optional bytes body = 3;</code>
+     * <code>optional bytes body = 4;</code>
      */
     public com.google.protobuf.ByteString getBody() {
       return body_;
@@ -255,7 +301,10 @@ public final class ProtobuffFrame {
         output.writeSInt32(2, sub_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeBytes(3, body_);
+        output.writeSInt32(3, sid_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, body_);
       }
       unknownFields.writeTo(output);
     }
@@ -275,7 +324,11 @@ public final class ProtobuffFrame {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(3, body_);
+          .computeSInt32Size(3, sid_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, body_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -303,6 +356,11 @@ public final class ProtobuffFrame {
         result = result && (getSub()
             == other.getSub());
       }
+      result = result && (hasSid() == other.hasSid());
+      if (hasSid()) {
+        result = result && (getSid()
+            == other.getSid());
+      }
       result = result && (hasBody() == other.hasBody());
       if (hasBody()) {
         result = result && getBody()
@@ -326,6 +384,10 @@ public final class ProtobuffFrame {
       if (hasSub()) {
         hash = (37 * hash) + SUB_FIELD_NUMBER;
         hash = (53 * hash) + getSub();
+      }
+      if (hasSid()) {
+        hash = (37 * hash) + SID_FIELD_NUMBER;
+        hash = (53 * hash) + getSid();
       }
       if (hasBody()) {
         hash = (37 * hash) + BODY_FIELD_NUMBER;
@@ -468,8 +530,10 @@ public final class ProtobuffFrame {
         bitField0_ = (bitField0_ & ~0x00000001);
         sub_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
-        body_ = com.google.protobuf.ByteString.EMPTY;
+        sid_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        body_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -504,6 +568,10 @@ public final class ProtobuffFrame {
         result.sub_ = sub_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
+        }
+        result.sid_ = sid_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
         }
         result.body_ = body_;
         result.bitField0_ = to_bitField0_;
@@ -553,6 +621,9 @@ public final class ProtobuffFrame {
         }
         if (other.hasSub()) {
           setSub(other.getSub());
+        }
+        if (other.hasSid()) {
+          setSid(other.getSid());
         }
         if (other.hasBody()) {
           setBody(other.getBody());
@@ -687,23 +758,71 @@ public final class ProtobuffFrame {
         return this;
       }
 
+      private int sid_ ;
+      /**
+       * <pre>
+       *版本序列号
+       * </pre>
+       *
+       * <code>optional sint32 sid = 3;</code>
+       */
+      public boolean hasSid() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <pre>
+       *版本序列号
+       * </pre>
+       *
+       * <code>optional sint32 sid = 3;</code>
+       */
+      public int getSid() {
+        return sid_;
+      }
+      /**
+       * <pre>
+       *版本序列号
+       * </pre>
+       *
+       * <code>optional sint32 sid = 3;</code>
+       */
+      public Builder setSid(int value) {
+        bitField0_ |= 0x00000004;
+        sid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *版本序列号
+       * </pre>
+       *
+       * <code>optional sint32 sid = 3;</code>
+       */
+      public Builder clearSid() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        sid_ = 0;
+        onChanged();
+        return this;
+      }
+
       private com.google.protobuf.ByteString body_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <pre>
        *数据 body
        * </pre>
        *
-       * <code>optional bytes body = 3;</code>
+       * <code>optional bytes body = 4;</code>
        */
       public boolean hasBody() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
        * <pre>
        *数据 body
        * </pre>
        *
-       * <code>optional bytes body = 3;</code>
+       * <code>optional bytes body = 4;</code>
        */
       public com.google.protobuf.ByteString getBody() {
         return body_;
@@ -713,13 +832,13 @@ public final class ProtobuffFrame {
        *数据 body
        * </pre>
        *
-       * <code>optional bytes body = 3;</code>
+       * <code>optional bytes body = 4;</code>
        */
       public Builder setBody(com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000004;
+  bitField0_ |= 0x00000008;
         body_ = value;
         onChanged();
         return this;
@@ -729,10 +848,10 @@ public final class ProtobuffFrame {
        *数据 body
        * </pre>
        *
-       * <code>optional bytes body = 3;</code>
+       * <code>optional bytes body = 4;</code>
        */
       public Builder clearBody() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         body_ = getDefaultInstance().getBody();
         onChanged();
         return this;
@@ -826,10 +945,27 @@ public final class ProtobuffFrame {
 
     /**
      * <pre>
+     *版本序列号
+     * </pre>
+     *
+     * <code>optional sint32 sid = 3;</code>
+     */
+    boolean hasSid();
+    /**
+     * <pre>
+     *版本序列号
+     * </pre>
+     *
+     * <code>optional sint32 sid = 3;</code>
+     */
+    int getSid();
+
+    /**
+     * <pre>
      *状态码 code 0 正常
      * </pre>
      *
-     * <code>required sint32 code = 3;</code>
+     * <code>required sint32 code = 4;</code>
      */
     boolean hasCode();
     /**
@@ -837,7 +973,7 @@ public final class ProtobuffFrame {
      *状态码 code 0 正常
      * </pre>
      *
-     * <code>required sint32 code = 3;</code>
+     * <code>required sint32 code = 4;</code>
      */
     int getCode();
 
@@ -846,7 +982,7 @@ public final class ProtobuffFrame {
      *数据 body
      * </pre>
      *
-     * <code>optional bytes body = 4;</code>
+     * <code>optional bytes body = 5;</code>
      */
     boolean hasBody();
     /**
@@ -854,7 +990,7 @@ public final class ProtobuffFrame {
      *数据 body
      * </pre>
      *
-     * <code>optional bytes body = 4;</code>
+     * <code>optional bytes body = 5;</code>
      */
     com.google.protobuf.ByteString getBody();
   }
@@ -877,6 +1013,7 @@ public final class ProtobuffFrame {
     private Response() {
       cmd_ = 0;
       sub_ = 0;
+      sid_ = 0;
       code_ = 0;
       body_ = com.google.protobuf.ByteString.EMPTY;
     }
@@ -921,11 +1058,16 @@ public final class ProtobuffFrame {
             }
             case 24: {
               bitField0_ |= 0x00000004;
+              sid_ = input.readSInt32();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000008;
               code_ = input.readSInt32();
               break;
             }
-            case 34: {
-              bitField0_ |= 0x00000008;
+            case 42: {
+              bitField0_ |= 0x00000010;
               body_ = input.readBytes();
               break;
             }
@@ -1000,47 +1142,70 @@ public final class ProtobuffFrame {
       return sub_;
     }
 
-    public static final int CODE_FIELD_NUMBER = 3;
+    public static final int SID_FIELD_NUMBER = 3;
+    private int sid_;
+    /**
+     * <pre>
+     *版本序列号
+     * </pre>
+     *
+     * <code>optional sint32 sid = 3;</code>
+     */
+    public boolean hasSid() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <pre>
+     *版本序列号
+     * </pre>
+     *
+     * <code>optional sint32 sid = 3;</code>
+     */
+    public int getSid() {
+      return sid_;
+    }
+
+    public static final int CODE_FIELD_NUMBER = 4;
     private int code_;
     /**
      * <pre>
      *状态码 code 0 正常
      * </pre>
      *
-     * <code>required sint32 code = 3;</code>
+     * <code>required sint32 code = 4;</code>
      */
     public boolean hasCode() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
+      return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
      * <pre>
      *状态码 code 0 正常
      * </pre>
      *
-     * <code>required sint32 code = 3;</code>
+     * <code>required sint32 code = 4;</code>
      */
     public int getCode() {
       return code_;
     }
 
-    public static final int BODY_FIELD_NUMBER = 4;
+    public static final int BODY_FIELD_NUMBER = 5;
     private com.google.protobuf.ByteString body_;
     /**
      * <pre>
      *数据 body
      * </pre>
      *
-     * <code>optional bytes body = 4;</code>
+     * <code>optional bytes body = 5;</code>
      */
     public boolean hasBody() {
-      return ((bitField0_ & 0x00000008) == 0x00000008);
+      return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
      * <pre>
      *数据 body
      * </pre>
      *
-     * <code>optional bytes body = 4;</code>
+     * <code>optional bytes body = 5;</code>
      */
     public com.google.protobuf.ByteString getBody() {
       return body_;
@@ -1077,10 +1242,13 @@ public final class ProtobuffFrame {
         output.writeSInt32(2, sub_);
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeSInt32(3, code_);
+        output.writeSInt32(3, sid_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
-        output.writeBytes(4, body_);
+        output.writeSInt32(4, code_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, body_);
       }
       unknownFields.writeTo(output);
     }
@@ -1100,11 +1268,15 @@ public final class ProtobuffFrame {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeSInt32Size(3, code_);
+          .computeSInt32Size(3, sid_);
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(4, body_);
+          .computeSInt32Size(4, code_);
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, body_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -1131,6 +1303,11 @@ public final class ProtobuffFrame {
       if (hasSub()) {
         result = result && (getSub()
             == other.getSub());
+      }
+      result = result && (hasSid() == other.hasSid());
+      if (hasSid()) {
+        result = result && (getSid()
+            == other.getSid());
       }
       result = result && (hasCode() == other.hasCode());
       if (hasCode()) {
@@ -1160,6 +1337,10 @@ public final class ProtobuffFrame {
       if (hasSub()) {
         hash = (37 * hash) + SUB_FIELD_NUMBER;
         hash = (53 * hash) + getSub();
+      }
+      if (hasSid()) {
+        hash = (37 * hash) + SID_FIELD_NUMBER;
+        hash = (53 * hash) + getSid();
       }
       if (hasCode()) {
         hash = (37 * hash) + CODE_FIELD_NUMBER;
@@ -1306,10 +1487,12 @@ public final class ProtobuffFrame {
         bitField0_ = (bitField0_ & ~0x00000001);
         sub_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
-        code_ = 0;
+        sid_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
-        body_ = com.google.protobuf.ByteString.EMPTY;
+        code_ = 0;
         bitField0_ = (bitField0_ & ~0x00000008);
+        body_ = com.google.protobuf.ByteString.EMPTY;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -1345,9 +1528,13 @@ public final class ProtobuffFrame {
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.code_ = code_;
+        result.sid_ = sid_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
+        }
+        result.code_ = code_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
         }
         result.body_ = body_;
         result.bitField0_ = to_bitField0_;
@@ -1397,6 +1584,9 @@ public final class ProtobuffFrame {
         }
         if (other.hasSub()) {
           setSub(other.getSub());
+        }
+        if (other.hasSid()) {
+          setSid(other.getSid());
         }
         if (other.hasCode()) {
           setCode(other.getCode());
@@ -1537,23 +1727,71 @@ public final class ProtobuffFrame {
         return this;
       }
 
+      private int sid_ ;
+      /**
+       * <pre>
+       *版本序列号
+       * </pre>
+       *
+       * <code>optional sint32 sid = 3;</code>
+       */
+      public boolean hasSid() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <pre>
+       *版本序列号
+       * </pre>
+       *
+       * <code>optional sint32 sid = 3;</code>
+       */
+      public int getSid() {
+        return sid_;
+      }
+      /**
+       * <pre>
+       *版本序列号
+       * </pre>
+       *
+       * <code>optional sint32 sid = 3;</code>
+       */
+      public Builder setSid(int value) {
+        bitField0_ |= 0x00000004;
+        sid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <pre>
+       *版本序列号
+       * </pre>
+       *
+       * <code>optional sint32 sid = 3;</code>
+       */
+      public Builder clearSid() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        sid_ = 0;
+        onChanged();
+        return this;
+      }
+
       private int code_ ;
       /**
        * <pre>
        *状态码 code 0 正常
        * </pre>
        *
-       * <code>required sint32 code = 3;</code>
+       * <code>required sint32 code = 4;</code>
        */
       public boolean hasCode() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
+        return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
        * <pre>
        *状态码 code 0 正常
        * </pre>
        *
-       * <code>required sint32 code = 3;</code>
+       * <code>required sint32 code = 4;</code>
        */
       public int getCode() {
         return code_;
@@ -1563,10 +1801,10 @@ public final class ProtobuffFrame {
        *状态码 code 0 正常
        * </pre>
        *
-       * <code>required sint32 code = 3;</code>
+       * <code>required sint32 code = 4;</code>
        */
       public Builder setCode(int value) {
-        bitField0_ |= 0x00000004;
+        bitField0_ |= 0x00000008;
         code_ = value;
         onChanged();
         return this;
@@ -1576,10 +1814,10 @@ public final class ProtobuffFrame {
        *状态码 code 0 正常
        * </pre>
        *
-       * <code>required sint32 code = 3;</code>
+       * <code>required sint32 code = 4;</code>
        */
       public Builder clearCode() {
-        bitField0_ = (bitField0_ & ~0x00000004);
+        bitField0_ = (bitField0_ & ~0x00000008);
         code_ = 0;
         onChanged();
         return this;
@@ -1591,17 +1829,17 @@ public final class ProtobuffFrame {
        *数据 body
        * </pre>
        *
-       * <code>optional bytes body = 4;</code>
+       * <code>optional bytes body = 5;</code>
        */
       public boolean hasBody() {
-        return ((bitField0_ & 0x00000008) == 0x00000008);
+        return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
        * <pre>
        *数据 body
        * </pre>
        *
-       * <code>optional bytes body = 4;</code>
+       * <code>optional bytes body = 5;</code>
        */
       public com.google.protobuf.ByteString getBody() {
         return body_;
@@ -1611,13 +1849,13 @@ public final class ProtobuffFrame {
        *数据 body
        * </pre>
        *
-       * <code>optional bytes body = 4;</code>
+       * <code>optional bytes body = 5;</code>
        */
       public Builder setBody(com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000008;
+  bitField0_ |= 0x00000010;
         body_ = value;
         onChanged();
         return this;
@@ -1627,10 +1865,10 @@ public final class ProtobuffFrame {
        *数据 body
        * </pre>
        *
-       * <code>optional bytes body = 4;</code>
+       * <code>optional bytes body = 5;</code>
        */
       public Builder clearBody() {
-        bitField0_ = (bitField0_ & ~0x00000008);
+        bitField0_ = (bitField0_ & ~0x00000010);
         body_ = getDefaultInstance().getBody();
         onChanged();
         return this;
@@ -1703,11 +1941,12 @@ public final class ProtobuffFrame {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\016pb_frame.proto\022\010PB_MEUMX\"1\n\007Request\022\013\n" +
-      "\003cmd\030\001 \002(\021\022\013\n\003sub\030\002 \002(\021\022\014\n\004body\030\003 \001(\014\"@\n" +
-      "\010Response\022\013\n\003cmd\030\001 \002(\021\022\013\n\003sub\030\002 \002(\021\022\014\n\004c" +
-      "ode\030\003 \002(\021\022\014\n\004body\030\004 \001(\014B)\n\027com.meux.icar" +
-      "bonx.protoB\016ProtobuffFrame"
+      "\n\016pb_frame.proto\022\010PB_MEUMX\">\n\007Request\022\013\n" +
+      "\003cmd\030\001 \002(\021\022\013\n\003sub\030\002 \002(\021\022\013\n\003sid\030\003 \001(\021\022\014\n\004" +
+      "body\030\004 \001(\014\"M\n\010Response\022\013\n\003cmd\030\001 \002(\021\022\013\n\003s" +
+      "ub\030\002 \002(\021\022\013\n\003sid\030\003 \001(\021\022\014\n\004code\030\004 \002(\021\022\014\n\004b" +
+      "ody\030\005 \001(\014B)\n\027com.meux.icarbonx.protoB\016Pr" +
+      "otobuffFrame"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1726,13 +1965,13 @@ public final class ProtobuffFrame {
     internal_static_PB_MEUMX_Request_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PB_MEUMX_Request_descriptor,
-        new java.lang.String[] { "Cmd", "Sub", "Body", });
+        new java.lang.String[] { "Cmd", "Sub", "Sid", "Body", });
     internal_static_PB_MEUMX_Response_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_PB_MEUMX_Response_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_PB_MEUMX_Response_descriptor,
-        new java.lang.String[] { "Cmd", "Sub", "Code", "Body", });
+        new java.lang.String[] { "Cmd", "Sub", "Sid", "Code", "Body", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

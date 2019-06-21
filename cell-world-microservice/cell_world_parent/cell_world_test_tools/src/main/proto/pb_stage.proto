@@ -1,0 +1,13 @@
+syntax = "proto2";
+package PB_MEUMX;
+option java_package = "com.meux.icarbonx.proto";
+
+//定义Protobuf协议交互框架类名
+option java_outer_classname = "PbStage";
+
+//GM 请求一键解锁所有关卡
+message UnLockAllStage
+{
+    required sint64 target = 1;//解锁角色
+    required sint32 wid = 2;//世界ID
+}

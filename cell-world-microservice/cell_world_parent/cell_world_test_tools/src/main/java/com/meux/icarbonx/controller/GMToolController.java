@@ -168,6 +168,44 @@ public class GMToolController {
         return null;
     }
 
+
+    /**
+     * 一键解锁关卡
+     * @param wid 世界ID
+     * @param rid　角色ID
+     */
+    @PostMapping("/stage/unlockAllStage")
+    public Result unlockAllStage(@RequestParam("wid") int wid,@RequestParam("rid") long rid){
+        try {
+            if(StringUtils.isEmpty(wid)|| StringUtils.isEmpty(rid)) {
+                return new Result(Code.ERROR, "参数不能为空");
+            }
+
+            PbStage.UnLockAllStage.Builder body = PbStage.UnLockAllStage.newBuilder();
+            body.setTarget(rid);
+            body.setWid(wid);
+
+            ProtobuffFrame.Request.Builder msg = ProtobuffFrame.Request.newBuilder();
+            msg.setCmd(mailConfig.getCmd());
+            msg.setSub(3);
+            msg.setBody(body.build().toByteString());
+
+            boolean b = toolService.sendTo(msg.build(), mailConfig.getUrl());
+            if(b){
+                logger.info("解锁全部关卡");
+                return new Result(Code.SUCCESS,"解锁全部关卡成功");
+            }
+            logger.info("解锁全部关卡失败");
+            return new Result(Code.ERROR,"解锁失败");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+
     /**
      * 文件上传
      */
@@ -235,6 +273,7 @@ public class GMToolController {
         }
         return null;
     }
+
 
 
 }
