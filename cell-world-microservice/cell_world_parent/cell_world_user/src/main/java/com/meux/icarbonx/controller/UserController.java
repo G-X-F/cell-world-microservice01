@@ -15,7 +15,13 @@ public class UserController {
 
     @PostMapping("/user/login")
     public User login(String username, String password) {
-        if (username.equals("123") && password.equals("123")) {
+        if (username.equals("chunhui") && password.equals("chuihui65586")) {
+            return new User(username, password);
+        }else if(username.equals("wanghui") && password.equals("wanghui988654")){
+            return new User(username, password);
+        }else if(username.equals("jianbin") && password.equals("jianbin321546")){
+            return new User(username, password);
+        }else if(username.equals("guorong") && password.equals("guorong2315647")){
             return new User(username, password);
         }
 //        User user = new User(username,password);

@@ -34,8 +34,8 @@ command:
   sub_09: 8
   #url: http://10.0.66.13:80 线上
 
-  #url: http://127.0.0.1:9016
-  url: http://10.0.160.106:9016
+  url: http://127.0.0.1:9016
+  #url: http://10.0.160.106:9016
 
 propertyConfig:
   type: xls,bytes

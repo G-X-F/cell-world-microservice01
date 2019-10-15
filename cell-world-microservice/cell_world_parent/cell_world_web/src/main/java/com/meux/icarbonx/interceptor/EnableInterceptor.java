@@ -1,5 +1,6 @@
 package com.meux.icarbonx.interceptor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -15,17 +16,25 @@ import java.util.List;
 
 @Configuration
 public class EnableInterceptor {
+
+    private final LoginInterceptor loginInterceptor;
+
+    @Autowired
+    public EnableInterceptor(LoginInterceptor loginInterceptor) {
+        this.loginInterceptor = loginInterceptor;
+    }
+
     @Bean
     public WebMvcConfigurer webMvcConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addViewControllers(ViewControllerRegistry registry) {
-                //registry.addViewController("/").setViewName("index");
+                registry.addViewController("/").setViewName("index");
             }
 
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
-                //registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns("/index.html","/","/user/login","/page/index","/css/**","/js/**","/img/**","/font-awesome/**");
+                registry.addInterceptor(loginInterceptor).addPathPatterns("/**").excludePathPatterns("/index","/","/user/login","/page/index","/css/**","/js/**","/img/**","/font-awesome/**");
 
             }
 

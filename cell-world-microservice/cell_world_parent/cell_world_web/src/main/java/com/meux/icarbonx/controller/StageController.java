@@ -28,6 +28,7 @@ public class StageController {
      */
     @PostMapping("/unlockAllStage")
     public Result unlockAllStage(@RequestParam("wid") int wid, @RequestParam("rid") String rid){
+
         try {
             if(StringUtils.isEmpty(wid)|| StringUtils.isEmpty(rid)) {
                 return new Result(Code.ERROR, "参数不能为空");
